@@ -1,12 +1,17 @@
 from typing import List, Tuple
 import argparse
 
+
+
+## Rock +1
+## Paper +2
+## Scissors +3
 g_points_map = {
-        #        +1      +2      +3
-        #       Rock    Paper   Scissors
-        "A" : { "X": 4, "Y": 8, "Z": 3},   # Rock
+        #        0       3       6
+        #       Lose    Draw    Win
+        "A" : { "X": 3, "Y": 4, "Z": 8},   # Rock
         "B" : { "X": 1, "Y": 5, "Z": 9},   # Paper
-        "C" : { "X": 7, "Y": 2, "Z": 6},   # Scissors
+        "C" : { "X": 2, "Y": 6, "Z": 7},   # Scissors
 }
 
 def load_file(filename: str) -> List[Tuple[str, str]]:
