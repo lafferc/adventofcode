@@ -45,7 +45,7 @@ def main():
     elfs_calories = [elf.get_total_calories() for elf in elfs]
     elfs_calories.sort(reverse=True)
 
-    print(sum(elfs_calories[:args.num])) 
+    print(sum(elfs_calories[:args.num]))
 
 
 
