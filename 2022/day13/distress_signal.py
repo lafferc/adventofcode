@@ -47,6 +47,18 @@ def compare_list(a, b):
     return r
 
 
+class Packet:
+    def __init__(self, raw: str):
+        self.raw = raw
+        self.data = json.loads(raw)
+
+    def __eq__(self, other):
+        return compare_list(self.data, other.data) == 0
+
+    def __lt__(self, other):
+        return compare_list(self.data, other.data) < 0
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("filename", help="input filename")
@@ -58,19 +70,32 @@ def main():
         logging.basicConfig(level=logging.DEBUG)
 
 
-    index = 0
-    total = 0
+    packets = []
     for packeta_raw, packetb_raw in load_packets(args.filename):
-        packeta = json.loads(packeta_raw)
-        packetb = json.loads(packetb_raw)
+        packets.append(Packet(packeta_raw))
+        packets.append(Packet(packetb_raw))
 
-        index += 1
-        logging.debug(f"== Pair {index} ==")
-        if (compare_list(packeta, packetb)) < 0:
-            logging.debug(f'inputs are in the right order')
-            total += index
 
-    print(f"total: {total}")
+    divider1 = Packet("[[2]]")
+    divider2 = Packet("[[6]]")
+
+    packets.append(divider1)
+    packets.append(divider2)
+
+    logging.debug("==== start of sort ====")
+    packets.sort()
+    logging.debug("==== end of sort ====")
+
+    if args.debug:
+        for p in packets:
+            print(p.raw)
+            if p.raw in [divider1.raw, divider2.raw]:
+                print("^^^^")
+
+    index_div1 = packets.index(divider1) + 1 
+    index_div2 = packets.index(divider2) + 1
+
+    print(f"{index_div1} x {index_div2} = {index_div2*index_div1}")
 
 
 if __name__ == "__main__":
