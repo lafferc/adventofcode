@@ -69,7 +69,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("filename", help="input filename")
     parser.add_argument("-d", "--debug", help="set debug logging", action="store_true")
-    
+
     args = parser.parse_args()
 
     if args.debug:
