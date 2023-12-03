@@ -17,6 +17,7 @@ class CubeSet:
             count, colour = part.split()
             setattr(self, colour, int(count))
 
+
 class CubeGame:
     def __init__(self, description):
         self._id = None
@@ -38,13 +39,19 @@ class CubeGame:
         for r in rounds.split(';'):
             self.rounds.append(CubeSet(r))
 
+    def power_of_min_cubes(self):
+        blue = max([cs.blue for cs in self.rounds])
+        green = max([cs.green for cs in self.rounds])
+        red = max([cs.red for cs in self.rounds])
+
+        logging.debug(f"Game {self._id}: min cubes {red} red, {green} green, {blue} blue")
+        return blue * green * red
 
 
 def load_file(filename: str) -> List[CubeGame]:
     with open(filename) as input_file:
         for line in input_file.readlines():
             yield CubeGame(line.strip())
-
 
 
 def main():
@@ -58,7 +65,9 @@ def main():
         logging.basicConfig(level=logging.DEBUG)
 
     games = load_file(args.filename)
-    print(sum([cg._id for cg in games if cg.is_valid()]))
+    # values = [cg._id for cg in games if cg.is_valid()]
+    values = [cg.power_of_min_cubes() for cg in games]
+    print(sum(values))
 
 
 if __name__ == "__main__":
